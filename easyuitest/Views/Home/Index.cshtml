@@ -1,0 +1,130 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    <link rel="stylesheet" type="text/css" href="~/Contents/jquery-easyui-1.6.10/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="~/Contents/jquery-easyui-1.6.10/themes/icon.css" />
+    <script src="~/Contents/jquery-easyui-1.6.10/jquery.min.js">
+    </script>
+    <script src="~/Contents/jquery-easyui-1.6.10/easyloader.js"></script>
+    <script src="~/Contents/jquery-easyui-1.6.10/jquery.easyui.min.js"></script>
+    <script>
+        $(function () {
+            $('#ms3').combobox({
+                url: '/Ajax/combox',
+                valueField: 'id',
+                textField: 'name',
+                
+            });
+        });
+    </script>
+</head>
+<body>
+
+ 
+   
+    <table>
+        <tr>
+            <td>
+                分类：
+            </td>
+            <td>
+                <select class="easyui-combox" style="height:24px;width:200px;" editable="false" id="ms3"> </select>
+            </td>
+            <td>
+                关键字：
+            </td>
+            <td>
+                <input class="easyui-textbox"  name="keyword" id="keywords"/>
+            </td>
+            <td>
+                <button class="easyui-linkbutton" id="btn_search" onclick="javascript: hanio.search();">查询</button>
+            </td>
+        </tr>
+    </table>
+
+    <table id="grid"></table>
+    <script>
+
+        var hanio = (function () {
+            var v_isInit = false;
+            var init = function () {
+                if (!v_isInit) {
+                    console.log("初始化！...");
+                    init_grid();
+                    v_isInit = true;
+                }
+
+            }
+            var init_grid = function () {
+                $("#grid").datagrid({
+                    url: "/Ajax/AjaxGetArticleList",
+                    fitColumns: true,
+                    striped: true,
+                    fit: true,
+                    border: false,
+                    rownumbers: true,
+                    singleSelect: true,
+                    pagination: true,
+                    pageSize: 100,
+                    pageList: [10, 20, 30, 40, 50, 100],
+                    columns: [
+                        [
+                            {
+                                field: "id",
+                                title: "ID",
+                                width: 160,
+                                halign: "center",
+                                align: "center"
+                            },
+                            {
+                                field: "name",
+                                title: "名称",
+                                width: 160,
+                                halign: "center",
+                                align: "center",
+                                formatter: function (value, row) {
+                                    var str = "";
+                                    str += "<a href=\"#\">" + row.name + "</a>";
+                                    return str;
+
+                                }
+                            },
+                            {
+                                field: "detail",
+                                title: "详细",
+                                width: 160,
+                                halign: "center",
+                                align: "center"
+                            }
+
+                        ]
+                    ]
+                });
+            }
+            var search = function () {
+              //  var v = $("#ms3").combobox("getValue");
+                // console.log(v);
+                $("#grid").datagrid("load", {
+                    "typeid": $("#ms3").combobox("getValue"),
+                    "keyword": $("#keywords").val()
+                });
+            }
+            return {
+                init: init,
+                search: search
+            };
+        }());
+        hanio.init();
+    </script>
+
+</body>
+</html>
