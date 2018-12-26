@@ -1007,7 +1007,9 @@
     <Content Include="Contents\jquery-easyui-1.6.10\themes\mobile.css" />
     <Content Include="Contents\jquery-easyui-1.6.10\themes\react.css" />
     <Content Include="Contents\jquery-easyui-1.6.10\themes\vue.css" />
-    <Content Include="dlls\Oracle.DataAccess.dll" />
+    <Content Include="dlls\Oracle.DataAccess.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1037,6 +1039,7 @@
     <Content Include="Contents\jquery-easyui-1.6.10\demo\tree\tree_data2.json" />
     <Content Include="Contents\jquery-easyui-1.6.10\themes\material-teal\images\Thumbs.db" />
     <Content Include="Contents\jquery-easyui-1.6.10\themes\material\images\Thumbs.db" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

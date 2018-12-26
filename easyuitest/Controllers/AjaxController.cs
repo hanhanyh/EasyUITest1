@@ -10,7 +10,7 @@ namespace easyuitest.Controllers
 {
     public class AjaxController : Controller
     {
-        private string connstr = "Data Source=127.0.0.0.1/orcl;User ID=test1;Password=123456";
+        private string connstr = "Data Source=127.0.0.1/orcl;User ID=test1;Password=123456";
         public ActionResult combox()
         {
             //List<SelectModel> lModels = new List<SelectModel>();
@@ -65,16 +65,28 @@ namespace easyuitest.Controllers
                 conn.Open();
                 DataSet ds = new DataSet();
                 OracleDataAdapter dataAdapter = null;
-                if (typeid == null)
-                    dataAdapter = new OracleDataAdapter("select * from article a order by a.id desc", conn);
-                else if (typeid != null && keyword.Trim() == "")
+                string strsql = "";
+                strsql += "select * from article a  where 1=1";
+                if (!String.IsNullOrEmpty(keyword))
                 {
-                    dataAdapter = new OracleDataAdapter("select * from article a  where a.articletypeid=" + typeid + " order by a.id desc", conn);
+                    strsql += "and a.name like '%" + keyword + "%'";
                 }
-                else if (typeid != null && keyword.Trim() != "")
+                if (!String.IsNullOrEmpty(typeid))
                 {
-                    dataAdapter = new OracleDataAdapter(" select * from article a  where a.articletypeid = "+typeid+" and a.name like '%"+keyword+"%' order by a.id desc", conn);
+                    strsql += " and a.articletypeid = "+typeid;
                 }
+
+                //if (typeid == null)
+                //    dataAdapter = new OracleDataAdapter("select * from article a order by a.id desc", conn);
+                //else if (typeid != null && keyword.Trim() == "")
+                //{
+                //    dataAdapter = new OracleDataAdapter("select * from article a  where a.articletypeid=" + typeid + " order by a.id desc", conn);
+                //}
+                //else if (typeid != null && keyword.Trim() != "")
+                //{
+                //    dataAdapter = new OracleDataAdapter(" select * from article a  where a.articletypeid = "+typeid+" and a.name like '%"+keyword+"%' order by a.id desc", conn);
+                //}
+                dataAdapter = new OracleDataAdapter(strsql, conn);
                 dataAdapter.Fill(ds);
                 DataTable dt = ds.Tables[0];
                 foreach (DataRow dr  in dt.Rows)
